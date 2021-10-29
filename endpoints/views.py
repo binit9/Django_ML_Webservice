@@ -76,8 +76,10 @@ class PredictView(views.APIView):
         algorithm_status = self.request.query_params.get("status", "production")
         algorithm_version = self.request.query_params.get("version")
 
-        algs = MLAlgorithm.objects.filter(parent_endpoint__name = endpoint_name, status__status = algorithm_status, status__active=True)
-
+        algs = MLAlgorithm.objects.filter(parent_endpoint__name=endpoint_name, status__status=algorithm_status, status__active=True)
+        # return Response(
+        #         {"version": algorithm_version, "status": algorithm_status,"algs": algs}
+        # )
         if algorithm_version is not None:
             algs = algs.filter(version = algorithm_version)
 
@@ -86,6 +88,7 @@ class PredictView(views.APIView):
                 {"status": "Error", "message": "ML algorithm is not available"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+        
         if len(algs) != 1 and algorithm_status != "ab_testing":
             return Response(
                 {"status": "Error", "message": "ML algorithm selection is ambiguous. Please specify algorithm version."},

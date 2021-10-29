@@ -12,25 +12,7 @@ class RandomForestClassifier:
         self.model = joblib.load(os.path.join(path_to_artifacts, "random_forest_best.pkl"))
 
     def preprocessing(self, input_data):
-        # # JSON to pandas DataFrame
-        # input_data = pd.DataFrame(input_data, index=[0])
-        # # fill missing values
-        # input_data.fillna(self.values_fill_missing)
-        # # convert categoricals
-        # for column in [
-        #     "workclass",
-        #     "education",
-        #     "marital-status",
-        #     "occupation",
-        #     "relationship",
-        #     "race",
-        #     "sex",
-        #     "native-country",
-        # ]:
-        #     categorical_convert = self.encoders[column]
-        #     input_data[column] = categorical_convert.transform(input_data[column])
         input_data = np.expand_dims(list(input_data.values()), axis=0)
-
         return input_data
 
     def predict(self, input_data):
